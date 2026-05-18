@@ -1,0 +1,19 @@
+# Hermes Memory
+
+## Recent payments
+<!-- Auto-populated by ph-payment-confirmation skill -->
+
+## Active Orders
+<!-- Auto-populated by ph-order-intake skill -->
+
+## Pending Bookings
+<!-- Auto-populated by ph-appointment-booking skill -->
+
+## Confirmed Bookings
+<!-- Auto-populated by ph-appointment-booking skill -->
+
+## Pending Dispatch
+<!-- Auto-populated by ph-delivery-coordination skill -->
+
+## Customer Notes
+<!-- Long-term observations about returning customers -->

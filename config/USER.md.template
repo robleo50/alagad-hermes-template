@@ -1,0 +1,56 @@
+# {BUSINESS_NAME} — Tenant USER.md
+
+## Business Profile
+- Name: {BUSINESS_NAME}
+- Type: {BUSINESS_TYPE}   <!-- e.g. flower shop, salon, sari-sari, clinic -->
+- Owner: {OWNER_NAME}
+- Location: {CITY}, {PROVINCE}
+- Language preference: Taglish (default), English on customer signal
+
+## Payment Methods
+<!-- Fill in your actual numbers. Skip lines you don't accept. -->
+- GCash: {GCASH_NUMBER} (Account name: {GCASH_NAME})
+- Maya: {MAYA_NUMBER} (Account name: {MAYA_NAME})
+- BPI: {BPI_ACCOUNT} (Account name: {BPI_NAME})
+- Cash on Delivery: {COD_ENABLED}   <!-- yes/no -->
+
+## Services Offered
+<!-- For service-based businesses (salon, clinic, dental, real-estate). Skip if retail. -->
+- {SERVICE_1}: {DURATION_1}, ₱{PRICE_1}
+- {SERVICE_2}: {DURATION_2}, ₱{PRICE_2}
+
+## Products
+<!-- For retail. Skip if service-only. -->
+- {PRODUCT_1}: ₱{PRICE_1}
+- {PRODUCT_2}: ₱{PRICE_2}
+
+## Operating Hours
+- Mon-Fri: {WEEKDAY_OPEN} - {WEEKDAY_CLOSE}
+- Saturday: {SAT_OPEN} - {SAT_CLOSE}
+- Sunday: {SUN_HOURS_OR_CLOSED}
+
+## Holiday Schedule
+- Closed on all regular holidays: {YES_NO}
+- Custom closures: {LIST_OR_NONE}
+
+## Booking Rules
+<!-- Only for service businesses with appointments -->
+- Minimum advance notice: {HOURS}
+- Maximum advance booking: {DAYS}
+- Deposit required: {PERCENT}% for services over ₱{THRESHOLD}
+- Cancellation policy: {POLICY}
+
+## Delivery Configuration
+<!-- Only for businesses that deliver -->
+### Coverage zones
+- Zone 1 (₱{FEE_1}): {AREAS_1}
+- Zone 2 (₱{FEE_2}): {AREAS_2}
+- Zone 3 (₱{FEE_3}): {AREAS_3}
+
+### Couriers
+- Default: {COURIER}   <!-- Lalamove, Grab Express, in-house, etc. -->
+- Cutoff for same-day: {CUTOFF_TIME}
+
+## Escalation
+- Owner contact for escalations: {OWNER_TELEGRAM_OR_PHONE}
+- Escalate when: payment > ₱{ESCALATION_AMOUNT}, customer mentions police/legal, off-hours emergencies

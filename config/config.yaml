@@ -1,0 +1,51 @@
+# Alagad Hermes Template — config.yaml (v1.0.0)
+#
+# This is the curated config installed by install.sh. The api_key is a
+# placeholder; cloud-init injects the real per-tenant key on first boot.
+#
+# Tenants can override anything here via `hermes config set` or by editing
+# this file directly. Nothing in this config is locked.
+
+model:
+  provider: custom
+  api_base: http://192.168.8.136:4000/v1
+  api_key: LITELLM_KEY_PLACEHOLDER
+  model: gemma4-31b
+
+# Use built-in memory only in v1. Honcho/mem0/etc. defer to v1.1.
+memory:
+  provider: ""
+
+# Default context engine — no need to override.
+context:
+  engine: "compressor"
+
+# Toolsets pinned per messaging platform so tenant behavior is predictable.
+tools:
+  messaging:
+    enabled:
+      - file              # read/write files in workspace
+      - web               # web search (uses Tavily once tenant adds key)
+      - terminal          # shell access (sandboxed)
+      - memory            # MEMORY.md / USER.md ops
+      - session_search    # FTS5 search across past conversations
+      - skills            # load and use the Alagad PH skills
+      - cronjob           # scheduled reminders (for appointments)
+      - todo              # task tracking
+      - vision            # image analysis (payment screenshots)
+      - image_gen         # generate product images, marketing assets
+      - clarify           # ask user clarifying questions
+    disabled:
+      - browser           # headless browser — too heavy for 8GB tenants
+      - code_execution    # security risk for tenant-facing agents
+      - delegation        # multi-agent — overkill for SMB use
+      - rl                # training infrastructure — not a runtime tool
+      - homeassistant     # not relevant
+      - moa               # mixture-of-agents — overkill
+      - tts               # voice — defer to v1.1
+      - video             # video gen — skip
+      - feishu_doc        # not relevant
+      - feishu_drive      # not relevant
+      - yuanbao           # not relevant
+      - safe              # specialized tool, not relevant
+      - debugging         # dev-only
