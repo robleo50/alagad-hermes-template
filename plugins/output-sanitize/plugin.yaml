@@ -1,0 +1,7 @@
+name: output-sanitize
+version: 1.0.0
+description: "Rewrites outbound Beeper message text to plain text for DM channels (strips Markdown + any residual HTML) via a pre_tool_call hook on mcp_beeper_send_message. Defense-in-depth with the operator-tier formatting prompt (Session F): the prompt suppresses most, this guarantees the residual is clean. Customers on Beeper-bridged Instagram/FB/WhatsApp/SMS never render Markdown/HTML."
+author: Alagad
+kind: backend
+hooks:
+  - pre_tool_call
