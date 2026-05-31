@@ -1,0 +1,7 @@
+name: web-answer
+version: 1.0.0
+description: "Synthesized, cited web answers via the Alagad Answer adapter (Perplexica-backed). One tool: web_answer — ask a factual question, get a written answer plus the sources it cites. Requires ALAGAD_ANSWER_URL (the per-tenant tokened adapter base, e.g. http://192.168.8.242:8700/t/<token>). Backend lives on CT 9302."
+author: Alagad
+kind: backend
+provides_tools:
+  - web_answer
