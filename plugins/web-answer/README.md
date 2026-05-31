@@ -49,22 +49,24 @@ is persisted server-side.
   `searxng.conf` / `tavily.conf`. `spin-workspace.py` substitutes
   `ANSWER_TOKEN_PLACEHOLDER` once `answer.conf` is baked into CT 9000.
 - **CT 5000 (legacy, manual-launch):** `~/.hermes/.env`, then a manual gateway
-  restart. CT 5000 does not use the drop-in pattern.
+  restart (`hermes gateway run --replace --quiet`). CT 5000 does not use the
+  drop-in pattern.
 
-### Network prerequisite (tenant egress firewall)
+### Network prerequisite (tenant egress firewall) — applies to EVERY tenant
 
-Tenant CTs run an egress allowlist (`/etc/nftables.d/alagad-tenant.nft`,
-`alagad-tenant-fw.service`) baked into CT 9000. It must allow the answer
-adapter, or `web_answer` cannot connect from isolated-bridge tenants:
+Tenant CTs run an in-container egress allowlist (`/etc/nftables.d/alagad-tenant.nft`,
+`alagad-tenant-fw.service`). It is **independent of the bridge**, so it runs on
+every tenant — clones AND legacy flat-LAN CTs. It must allow the answer adapter,
+or `web_answer` cannot connect (drops to the catch-all `192.168.8.0/24 drop`):
 
 ```
-define ANSWER = 192.168.8.242
-ip daddr $ANSWER tcp dport 8700 accept   # web answer middleware (CT 9302)
+ip daddr 192.168.8.242 tcp dport 8700 accept   # web answer middleware (CT 9302)
 ```
 
-This is **tenant-fw v3** (2026-05-31); bake into CT 9000 alongside the
-`answer.conf` drop-in. Legacy CT 5000 has no egress firewall, so it reaches
-.242 without this.
+Bake this into CT 9000 (the golden image, define-style `$ANSWER`) alongside the
+`answer.conf` drop-in — call it **tenant-fw v3**. NOTE: legacy **CT 5000 also
+runs this firewall** (it does NOT reach .242 without the rule); it was bumped to
+**tenant-fw v2.2** with the same `.242` allow during the 2026-05-31 deploy.
 
 ## Focus modes
 
@@ -80,3 +82,11 @@ cited answer (RDNA 4 / 32GB GDDR6); `focus_mode` passthrough confirmed in the
 audit log; 451 (safety) and 429 (rate-limit) surface as clean tool errors;
 coexists with `web_search` / `web_extract`; the agent invokes it end-to-end
 via the gateway. Backend: `perplexica-1.10.2` on CT 9303.
+
+**Deployed to the live CT 5000** (Richard's appointment-setter) on 2026-05-31:
+token `workspace-16-appt-setter` issued, plugin installed, `.env` wired,
+tenant-fw v2.2 (`.242` allow), gateway restarted (manual `hermes gateway run
+--replace`). Verified: `web_answer` 200 with a cited PH-market answer; the
+canonical R9700 case returns accurate cited specs via `web_answer`;
+anti-hallucination refusal confirmed; `web_search` / `web_extract` regression
+OK. Snapshot `pre-web-answer-deploy-20260531` retained (≥1 week).
