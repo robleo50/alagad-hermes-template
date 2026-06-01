@@ -1,0 +1,39 @@
+--- agent/conversation_loop.py.bak.pre-fixA.20260531
++++ agent/conversation_loop.py
+@@ -3932,6 +3932,27 @@
+                 ):
+                     messages.pop()
+ 
++                # Alagad Fix A: flag the useless post-send narration turn so it is NOT
++                # persisted (run_agent._drop_post_send_narration drops it pre-flush).
++                # Gate: assistant + no tool_calls (this branch) + finish_reason==stop, AND
++                # the immediately-preceding action was a SUCCESSFUL mcp_beeper_send_message.
++                if (
++                    finish_reason == "stop"
++                    and not final_msg.get("tool_calls")
++                    and messages
++                    and isinstance(messages[-1], dict)
++                    and messages[-1].get("role") == "tool"
++                    and (messages[-1].get("tool_name") or messages[-1].get("name")) == "mcp_beeper_send_message"
++                ):
++                    try:
++                        from agent.display import _detect_tool_failure as _alagad_detect_fail
++                        _alagad_send_failed = _alagad_detect_fail(
++                            "mcp_beeper_send_message", messages[-1].get("content")
++                        )[0]
++                    except Exception:
++                        _alagad_send_failed = True  # fail-safe: if unsure, KEEP the turn
++                    if not _alagad_send_failed:
++                        final_msg["_post_send_narration_drop"] = True
+                 messages.append(final_msg)
+ 
+                 _turn_exit_reason = f"text_response(finish_reason={finish_reason})"
+@@ -4104,7 +4125,7 @@
+         agent.session_id or "none",
+     )
+ 
+-    if _last_msg_role == "tool" and not interrupted:
++    if _last_msg_role == "tool" and not interrupted and _last_tool_name != "mcp_beeper_send_message":
+         # Agent was mid-work — this is the "just stops" case.
+         logger.warning(
+             "Turn ended with pending tool result (agent may appear stuck). "

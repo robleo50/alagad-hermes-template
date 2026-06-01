@@ -1,0 +1,26 @@
+--- gateway/run.py.bak.pre-carveout.20260601
++++ gateway/run.py
+@@ -16993,9 +16993,24 @@
+                 and getattr(_resume_entry, "resume_pending", False)
+                 and _interruption_is_fresh
+             )
++            # Alagad Fix A carve-out: a trailing SUCCESSFUL mcp_beeper_send_message
++            # result is an intentional clean turn ending (post-send narration is dropped
++            # pre-persist), NOT an interrupted mid-tool turn. Genuine mid-task
++            # interruptions (other tools, or a FAILED send) still recover normally.
++            def _alagad_is_terminal_send_tail(_m):
++                try:
++                    if not (isinstance(_m, dict) and _m.get("role") == "tool"):
++                        return False
++                    if (_m.get("tool_name") or _m.get("name")) != "mcp_beeper_send_message":
++                        return False
++                    from agent.display import _detect_tool_failure as _alagad_df
++                    return not _alagad_df("mcp_beeper_send_message", _m.get("content"))[0]
++                except Exception:
++                    return False
+             _has_fresh_tool_tail = bool(
+                 agent_history
+                 and agent_history[-1].get("role") == "tool"
++                and not _alagad_is_terminal_send_tail(agent_history[-1])
+                 and _interruption_is_fresh
+             )

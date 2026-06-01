@@ -1,0 +1,31 @@
+--- run_agent.py.bak.pre-fixA.20260531
++++ run_agent.py
+@@ -1237,6 +1237,7 @@
+         Ensures conversations are never lost, even on errors or early returns.
+         """
+         self._drop_trailing_empty_response_scaffolding(messages)
++        self._drop_post_send_narration(messages)
+         self._apply_persist_user_message_override(messages)
+         self._session_messages = messages
+         self._save_session_log(messages)
+@@ -1295,6 +1296,20 @@
+         ):
+             messages.pop()
+ 
++    def _drop_post_send_narration(self, messages: List[Dict]) -> None:
++        """Drop ONLY a trailing bare assistant turn flagged as post-successful-send
++        narration (Alagad Fix A). Keeps the tool_call + tool result intact -- no
++        rewind. The four-condition gate is enforced at flag time in conversation_loop
++        (the no-tool-call final-response branch)."""
++        if (
++            messages
++            and isinstance(messages[-1], dict)
++            and messages[-1].get("_post_send_narration_drop")
++            and messages[-1].get("role") == "assistant"
++            and not messages[-1].get("tool_calls")
++        ):
++            messages.pop()
++
+     def _repair_message_sequence(self, messages: List[Dict]) -> int:
+         """Forwarder — see ``agent.agent_runtime_helpers.repair_message_sequence``."""
+         from agent.agent_runtime_helpers import repair_message_sequence
