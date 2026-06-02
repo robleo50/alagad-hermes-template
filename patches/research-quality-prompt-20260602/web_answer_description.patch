@@ -1,0 +1,27 @@
+# Session R (2026-06-02): de-misdirect the web_answer tool description so it stops
+# steering list/research queries toward web_search.
+#
+# File: plugins/web-answer/tools.py  (WEB_ANSWER_SCHEMA["description"])
+#
+# The original description told the model to use web_answer for a "direct answer
+# rather than a list of links (use web_search for links)" — which actively routed
+# list-type and research queries to web_search (the wrong tool). The parenthetical
+# is removed and replaced with wording that makes web_answer the choice for lists/
+# breakdowns/research, reserving web_search for raw links the user wants to click.
+#
+# NOTE: the PRIMARY fix is the directive system_prompt (Session S). This description
+# tweak is a secondary reinforcement. web_search cannot be cleanly disabled (see
+# README) — the lever is wording, not tool removal.
+
+--- a/plugins/web-answer/tools.py
++++ b/plugins/web-answer/tools.py
+@@ WEB_ANSWER_SCHEMA["description"] @@
+         "needs current real-world facts (product specs, prices, recent events, "
+         "\"what is X\", \"how does Y compare to Z\") and wants a direct answer rather "
+-        "than a list of links (use web_search for links) or the contents of one "
++        "than only a list of links — web_answer also handles lists, breakdowns, "
++        "comparisons, and research that need real data, not just headlines "
++        "(reserve web_search for when the user wants raw links to click). For the "
++        "contents of one "
+         "specific URL (use web_extract). Returns a written answer followed by the "
+         "sources it cites. Synthesis can take 20-40 seconds."
