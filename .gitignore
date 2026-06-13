@@ -10,3 +10,7 @@ Thumbs.db
 
 # Local-only test output
 /tmp/
+
+# Python bytecode
+__pycache__/
+*.pyc
