@@ -1,6 +1,6 @@
 name: gws
-version: 1.0.0
-description: "Google Workspace tools (Calendar, Contacts, Sheets) for the tenant's connected Google account, via the Alagad GWS proxy (CT 9470). Tools: calendar_upcoming, calendar_slots, calendar_book, calendar_cancel, contacts_add, contacts_search, sheets_append, sheets_read. No Gmail. Requires GWS_PROXY_URL + GWS_PROXY_TOKEN (the per-workspace Fernet bearer); the agent never sends a workspace id."
+version: 1.1.0
+description: "Google Workspace tools (Calendar, Contacts, Sheets) for the tenant's connected Google account, via the Alagad GWS proxy (CT 9470). Tools: calendar_upcoming, calendar_slots, calendar_book, calendar_cancel, contacts_add, contacts_search, sheets_read, sheets_append, sheets_update, sheets_clear. No Gmail, no Drive (sheets by ID/link; write ops target an explicit bounded range only). Requires GWS_PROXY_URL + GWS_PROXY_TOKEN; the agent never sends a workspace id."
 author: Alagad
 kind: backend
 provides_tools:
@@ -10,5 +10,7 @@ provides_tools:
   - calendar_cancel
   - contacts_add
   - contacts_search
-  - sheets_append
   - sheets_read
+  - sheets_append
+  - sheets_update
+  - sheets_clear
