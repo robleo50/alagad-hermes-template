@@ -21,10 +21,11 @@ ENV_TOKEN = "GWS_PROXY_TOKEN"
 _ERR = {
     "not_connected": "the Google account isn't connected yet — connect it in the portal",
     "auth_expired": "the Google connection expired and needs reconnecting",
+    "no_access": "I couldn't access that — make sure it's shared with your connected Google account, and double-check the link/ID",
     "scope_insufficient": "the Google connection is missing a needed permission — reconnect and allow all",
     "unknown_workspace": "this workspace isn't recognized — contact the operator",
     "temporarily_unavailable": "the service is briefly unavailable — try again shortly",
-    "not_found": "that item wasn't found (check the sheet ID / event id)",
+    "not_found": "I couldn't find that — double-check the link/ID (and that it's shared with your connected Google account)",
     "bad_request": "the request was invalid (for sheets, give an explicit range like Sheet1!A2:D2)",
     "unauthorized": "the service rejected the agent's credentials — contact the operator",
 }
