@@ -32,7 +32,7 @@ for plugin in disk-cleanup hermes-achievements image_gen; do
 done
 
 # --- 3. Install the 6 PH skills ---
-echo "==> Installing Alagad PH Essentials skills..."
+echo "==> Installing Alagad skills (PH Essentials + T1)..."
 SKILLS=(
   "ph-payment-confirmation"
   "ph-gcash-maya-instructions"
@@ -40,6 +40,12 @@ SKILLS=(
   "ph-order-intake"
   "ph-delivery-coordination"
   "ph-business-hours-and-holidays"
+  # Alagad T1 skills (2026-09-19): pure guidance over tools the agent already
+  # has; SKILL.md only, no scripts. They replace the reserved google-workspace,
+  # grounded-citations and ocr-and-documents bundles on tenants.
+  "alagad-google"
+  "alagad-sources"
+  "alagad-receipts"
 )
 for skill in "${SKILLS[@]}"; do
   if [[ -d "${REPO_DIR}/skills/${skill}" ]]; then

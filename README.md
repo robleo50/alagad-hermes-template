@@ -29,13 +29,16 @@ alagad-hermes-template/
 │   └── MEMORY.md.template     Empty MEMORY.md starter
 ├── plugins/
 │   └── web-answer/            web_answer tool -> Alagad Answer adapter (CT 9302)
-└── skills/                    Alagad PH Essentials — 6 Filipino SMB skills
+└── skills/                    Alagad skills — 6 PH Essentials + 3 T1 (SKILL.md only)
     ├── ph-payment-confirmation/
     ├── ph-gcash-maya-instructions/
     ├── ph-appointment-booking/
     ├── ph-order-intake/
     ├── ph-delivery-coordination/
-    └── ph-business-hours-and-holidays/
+    ├── ph-business-hours-and-holidays/
+    ├── alagad-google/         Which of the 11 Google tools to use; what they cannot do
+    ├── alagad-sources/        Search-before-assert, name the source, say "I don't know"
+    └── alagad-receipts/       Read a GCash/Maya/PO/handwritten photo, confirm in words
 ```
 
 ## Web middleware integration (search / fetch / answer)
@@ -89,8 +92,18 @@ template.
 | `ph-order-intake` | Takes orders, computes totals, asks for the right details |
 | `ph-delivery-coordination` | Handles delivery questions: address, courier, ETA, fees |
 | `ph-business-hours-and-holidays` | Answers "are you open?" with awareness of PH public holidays |
+| `alagad-google` | Which of the eleven connected Google tools (calendar, contacts, tracker sheet, doc read) to use for what, paging on truncated reads, and what they cannot do (no Gmail, Drive, editing) |
+| `alagad-sources` | Grounding discipline: search before asserting, name the source in words, quote sparingly, say "I don't know", never present a snippet as first-hand |
+| `alagad-receipts` | Reads photographed GCash/Maya/bank receipts, POs and handwritten orders with the vision tool, confirms the read in words, hands off to the ph-* payment/order skills |
 
 Each skill follows the [agentskills.io](https://agentskills.io) open standard.
+
+The three `alagad-*` skills are **pure guidance** over tools the tenant agent
+already has (the Google MCP tools, `vision_analyze`, the web tools). They ship
+as a single `SKILL.md` each — no `scripts/`, no fenced shell blocks — and
+`tests/test_skills_no_scripts.py` pins that. The platform floor disables the
+terminal and code-execution toolsets on tenants, so a skill that tells the
+agent to run something can only fail or invent.
 
 ## Versioning
 
