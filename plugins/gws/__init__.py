@@ -238,13 +238,17 @@ _TOOLS = [
         "calendar_upcoming",
         "List upcoming events on the user's OWN connected Google Calendar. Use when the user "
         "asks what's on their calendar/schedule/agenda, whether they're free, or to look up an "
-        "event before changing it. Returns titles, start/end times, and event_id.",
+        "event before changing it. Returns titles, start/end times, and event_id. "
+        "ON ERROR: tell the user you can't access their live calendar right now and why; do "
+        "NOT recite events from earlier in the conversation or memory as if they were current.",
         {"days": {"type": "integer", "description": "How many days ahead to list (default 7)."}},
         []), _upcoming),
     ("calendar_slots", _schema(
         "calendar_slots",
         "Find FREE time slots on the user's own Google Calendar for a date. Use when scheduling "
-        "a meeting and you need to offer open times.",
+        "a meeting and you need to offer open times. "
+        "ON ERROR: tell the user you can't access their live calendar right now; do NOT make "
+        "up availability from memory.",
         {"date": {"type": "string", "description": "Date as YYYY-MM-DD."},
          "duration_min": {"type": "integer", "description": "Slot length in minutes (default 30)."},
          "tz": {"type": "string", "description": "Optional IANA timezone."}},
@@ -278,14 +282,18 @@ _TOOLS = [
     ("contacts_search", _schema(
         "contacts_search",
         "Search the user's own Google Contacts by name or email. Use to look someone up before "
-        "booking with them or to retrieve their email/phone.",
+        "booking with them or to retrieve their email/phone. "
+        "ON ERROR: tell the user you can't access their contacts right now; do NOT recite "
+        "contact details from memory as if current.",
         {"q": {"type": "string", "description": "Search text (name or email)."}},
         ["q"]), _contacts_search),
     ("sheets_read", _schema(
         "sheets_read",
         "Read values from a range of a Google Sheet. You work with a sheet by its ID/link (you "
         "CANNOT search Drive by name — ask the user for the sheet link if you don't have the ID). "
-        "Provide the spreadsheet_id and an A1 range (e.g. 'Sheet1!A1:C10').",
+        "Provide the spreadsheet_id and an A1 range (e.g. 'Sheet1!A1:C10'). "
+        "ON ERROR: tell the user you can't access the sheet right now and why; do NOT report "
+        "rows from earlier in the conversation or memory as if they were the live data.",
         {"spreadsheet_id": {"type": "string", "description": "The Google Sheet's id (from its URL)."},
          "range": {"type": "string", "description": "A1 range, e.g. 'Sheet1!A1:C10'."}},
         ["spreadsheet_id", "range"]), _sheets_read),
